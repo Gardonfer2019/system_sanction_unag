@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="prueba5" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7a5c9b49-9dc5-422a-ac69-e92cf61ef530">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sanctions_System"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="numero_registro_asignado" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[WITH LISTA_FALTA_SANCION AS ( SELECT TSF.ID_SANCION_FALTA, TF.DESCRIPCION, TTF.NOMBRE_TIPO, TS.NOMBRE_SANCION FROM TBL_SANCION_FALTA TSF
+        LEFT JOIN TBL_FALTAS TF ON TSF.ID_FALTA = TF.ID_FALTA
+        LEFT JOIN TBL_SANCIONES TS ON TSF.ID_SANCION = TS.ID_SANCION
+        LEFT JOIN TBL_TIPO_FALTA TTF ON TF.ID_TIPO_FALTA=TTF.ID_TIPO_FALTA
+        ORDER BY TSF.ID_SANCION_FALTA ASC),
+
+
+	ESTUDIANTES AS (SELECT concat(RFE.primer_apellido_estudiante, ' ', 
+                      RFE.segundo_apellido_estudiante, ' ', 
+                      RFE.primer_nombre_estudiante, ' ', 
+                      RFE.segundo_nombre_estudiante) AS NOMBRE_COMPLETO, 
+                      RFCA.NUMERO_REGISTRO_ASIGNADO,
+                      RFCA.ID_USUARIO,
+                      RFCA.ID_CARRERA,
+                      AC.NOMBRE_CARRERA FROM REG_FICHA_ESTUDIANTE RFE
+                  JOIN REG_FICHA_CARRERA_ADMITIDO RFCA ON RFE.NUMERO_REGISTRO_ASIGNADO=RFCA.NUMERO_REGISTRO_ASIGNADO
+                  JOIN ACA_CARRERA AC ON RFCA.ID_CARRERA=AC.ID_CARRERA)
+        
+ 			
+SELECT  tse.id_solicitud_falta_estudiante, tse.numero_registro_asignado,
+		e.nombre_completo, e.id_carrera,
+		e.nombre_carrera,
+		tse.dictamen, tse.sancionado,
+		tsfe.responsable,
+		to_char( tsfe.fecha_falta_cometida, 'yyyy-MM-dd') as fecha_falta_cometida, to_char( tse.fecha_sancion, 'yyyy-MM-dd') as fecha_sancion,
+		lfs.DESCRIPCION, lfs.NOMBRE_TIPO, lfs.NOMBRE_SANCION
+	FROM tbl_sancion_estudiante tse
+	JOIN tbl_solicitud_falta_estudiante tsfe ON tse.id_solicitud_falta_estudiante=tsfe.id_solicitud_falta_estudiante
+	JOIN lista_falta_sancion lfs ON tsfe.id_sancion_falta=lfs.id_sancion_falta
+	JOIN estudiantes e ON tsfe.numero_registro_asignado=e.numero_registro_asignado
+	WHERE tse.numero_registro_asignado=$P{numero_registro_asignado} AND tse.sancionado=true
+	ORDER BY fecha_falta_cometida asc]]>
+	</queryString>
+	<field name="id_solicitud_falta_estudiante" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id_solicitud_falta_estudiante"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_solicitud_falta_estudiante"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbl_sancion_estudiante"/>
+	</field>
+	<field name="numero_registro_asignado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numero_registro_asignado"/>
+		<property name="com.jaspersoft.studio.field.label" value="numero_registro_asignado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbl_sancion_estudiante"/>
+	</field>
+	<field name="nombre_completo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_completo"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre_completo"/>
+	</field>
+	<field name="id_carrera" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="id_carrera"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_carrera"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="reg_ficha_carrera_admitido"/>
+	</field>
+	<field name="nombre_carrera" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_carrera"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre_carrera"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="aca_carrera"/>
+	</field>
+	<field name="dictamen" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dictamen"/>
+		<property name="com.jaspersoft.studio.field.label" value="dictamen"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbl_sancion_estudiante"/>
+	</field>
+	<field name="sancionado" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="sancionado"/>
+		<property name="com.jaspersoft.studio.field.label" value="sancionado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbl_sancion_estudiante"/>
+	</field>
+	<field name="responsable" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="responsable"/>
+		<property name="com.jaspersoft.studio.field.label" value="responsable"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbl_solicitud_falta_estudiante"/>
+	</field>
+	<field name="fecha_falta_cometida" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_falta_cometida"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha_falta_cometida"/>
+	</field>
+	<field name="fecha_sancion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fecha_sancion"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha_sancion"/>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbl_faltas"/>
+	</field>
+	<field name="nombre_tipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_tipo"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre_tipo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbl_tipo_falta"/>
+	</field>
+	<field name="nombre_sancion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_sancion"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre_sancion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tbl_sanciones"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="121" splitType="Stretch">
+			<image>
+				<reportElement x="721" y="2" width="81" height="100" uuid="aae07107-3b8e-4683-97de-43011e8b6a0a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["C:/Users/hacke/Pictures/logo1.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="73" width="802" height="30" uuid="d64abfa6-235b-4c81-9344-e89ebacee756"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FICHA DISCIPLINARIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="802" height="30" uuid="a07c9942-c9aa-48ce-85ed-96e9becff2f3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIRECCIÓN DE DESARROLLO  ESTUDIANTIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="9" width="802" height="30" uuid="ab3a1225-74f6-4b61-9186-2ad90c4a5c2d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSIDAD NACIONAL DE AGRICULTURA]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="2" y="115" width="800" height="1" uuid="501ac6c4-e9d4-43cb-ba6b-7f2f44394cf3"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="63" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<staticText>
+				<reportElement x="73" y="10" width="130" height="30" uuid="6dbbb1e6-5131-4133-9d2e-b7f0d5c5da23"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre del estudiante:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="211" y="10" width="260" height="30" uuid="11007fd7-278c-421a-ba64-6c77352fff07"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="155" y="30" width="49" height="30" uuid="2d0d30ea-41bb-4d2d-ac38-24575e66658f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="211" y="30" width="183" height="30" uuid="82beae25-5657-424e-8615-2d4d5e7d89e2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numero_registro_asignado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="480" y="10" width="50" height="30" uuid="8de16249-d194-4ec6-8450-4d1765ea5db0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Carrera:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="538" y="10" width="200" height="30" uuid="b7be6ce6-8c6e-47c5-9aef-4508d3285dc2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_carrera}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement x="6" y="0" width="49" height="30" uuid="0160990e-4f5f-4fea-9272-b2b5d4476c45"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="87" y="0" width="49" height="30" uuid="a6c96fed-38a9-4baf-8e75-7c1515777a87"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sanción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="383" y="1" width="66" height="30" uuid="1109fd35-d11e-4c17-b976-d548e99171e7"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="716" y="1" width="49" height="30" uuid="bbc12e86-cac2-4245-be6f-4b68e403c4f4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reportó]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="28" width="800" height="1" uuid="0e1d1a8e-d8ba-4cdc-ac4b-29306d2977c9"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="44" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="797" height="44" uuid="34a2ae4b-4055-476b-8676-d499f6af510b"/>
+				<textField>
+					<reportElement x="-13" y="1" width="100" height="30" uuid="3fbd9903-2a8d-43dc-bdd2-4b85ee5a3f9f">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="719447f8-2264-42b6-8f24-a771aaa5832d"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fecha_falta_cometida}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="101" y="1" width="100" height="30" uuid="a4bc9d3b-09a9-40d6-8bc0-567b14965d0d">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52f7cc4e-e777-4621-9652-a56c0a76d64c"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nombre_tipo}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="190" y="1" width="480" height="39" uuid="2ad46f39-a5f0-4aa4-968f-9cf88a5388b6">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a4f54447-a8a9-4fab-ac27-fe31c3178a25"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="692" y="0" width="100" height="30" uuid="7064aa09-09a3-4fd5-8fd3-3c44475fd73d">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="68aaa37f-fdc6-409f-89f4-9aa81b6c0885"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Times New Roman" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{responsable}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="25" forecolor="#D0B48E" backcolor="#388E3C" uuid="ffb10ec8-0371-4545-8eaa-96d62ad3cec0"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="757" y="3" width="40" height="20" forecolor="#FFFFFF" uuid="b5521ea6-5f36-4864-856f-58d0bcd011f2"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="677" y="3" width="80" height="20" forecolor="#FFFFFF" uuid="e625ea3c-1741-4cfe-81cf-fbbdd00162c8"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="3" width="197" height="20" forecolor="#FFFFFF" uuid="0c9f7e91-d3f5-47f9-82b7-0b2b3a43a5d6"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
