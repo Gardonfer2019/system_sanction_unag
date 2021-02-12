@@ -11,7 +11,7 @@ class SancionController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('solopersonal');
+        $this->middleware('sancion');
     }
     //Index
     public function index()

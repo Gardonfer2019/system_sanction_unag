@@ -69,6 +69,7 @@ class Kernel extends HttpKernel
         'solouser' => \App\Http\Middleware\SoloUser::class,
         'solodde'=> \App\Http\Middleware\SoloDde::class,
         'solopersonal'=> \App\Http\Middleware\SoloPersonal::class,
+        'sancion'=> \App\Http\Middleware\Sancion::class,
         
     ];
 }

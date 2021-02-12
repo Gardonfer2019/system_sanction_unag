@@ -11,7 +11,7 @@ Route::get('/', function () {
 Auth::routes();
 
 //Rutas deacuerdo al tipo de usuario
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');//Docentes
 Route::get('/estudiante', 'EstudianteController@index')->name('estudiante');
 Route::get('/csu', 'CsuController@index')->name('csu');
 Route::get('/cdf', 'CdfController@index')->name('cdf');
