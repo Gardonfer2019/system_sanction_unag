@@ -57,7 +57,7 @@ class ApelacionController extends Controller
                 to_char( tsfe.fecha_falta_cometida, 'yyyy-MM-dd') as fecha_falta_cometida, tsfe.responsable, tsfe.observaciones, lfs.*
             FROM tbl_solicitud_falta_estudiante tsfe
                 JOIN lista_falta_sancion lfs ON tsfe.id_sancion_falta=lfs.id_sancion_falta
-                WHERE tsfe.id_solicitud_falta_estudiante=:id_falta and tsfe.apelada=false and tsfe.borrado=false and tsfe.sancionada=false",["id_falta"=>$id_falta]);
+                WHERE tsfe.id_solicitud_falta_estudiante=:id_falta and tsfe.apelada=false and tsfe.borrado=false and tsfe.sancionada=false tsfe.reincidencia=false",["id_falta"=>$id_falta]);
 
         //  dd($falta);        
        return view('apelacion.formApelacion',["descripcion"=>$falta[0]->descripcion,

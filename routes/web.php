@@ -33,6 +33,7 @@ Route::post('/apelacion/create/{id_falta}','ApelacionController@store')->name('a
 Route::get('/sanciones', 'SancionController@index')->name('sanciones.index');//Funcional
 Route::get('/sanciones/create/{numero_registro_asignado}/{id_solicitud_falta_estudiante}', 'SancionController@create')->name('sanciones.create');//Funcional
 Route::post('/sanciones/create/{numero_registro_asignado}/{id_solicitud_falta_estudiante}', 'SancionController@store')->name('sanciones.store');//Funcional
+Route::post('/disciplinario/reincidencia','SancionController@reincidencia')->name('sanciones.reincidencia');
 
 
 // Modulo Historial o ficha disciplinaria

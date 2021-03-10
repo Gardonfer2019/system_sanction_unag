@@ -84,10 +84,11 @@ class FaltasController extends Controller
             $borrado=$request->inputBorrado;
             $apelada=$request->inputApelada;
             $sancionada=$request->inputSancionada;
+            $reincidencia=$request->inputReincidencia;
 
             $insert= DB::insert("INSERT INTO tbl_solicitud_falta_estudiante(
-                id_sancion_falta, id_usuario, numero_registro_asignado, fecha_falta_cometida, año, periodo, observaciones, responsable, borrado, apelada, sancionada)
-               VALUES ( :temp, :id_usuario, :numero_registro_asignado, :fechaFalta, :anio, :periodo, :observaciones, :responsable, :borrado, :apelada, :sancionada);",
+                id_sancion_falta, id_usuario, numero_registro_asignado, fecha_falta_cometida, año, periodo, observaciones, responsable, borrado, apelada, sancionada, reincidencia)
+               VALUES ( :temp, :id_usuario, :numero_registro_asignado, :fechaFalta, :anio, :periodo, :observaciones, :responsable, :borrado, :apelada, :sancionada, :reincidencia);",
                ["temp"=>$temp,
                "id_usuario"=>$id_usuario,
                "numero_registro_asignado"=>$numero_registro_asignado,
@@ -98,7 +99,8 @@ class FaltasController extends Controller
                "responsable"=>$responsable,
                "borrado"=>$borrado,
                "apelada"=>$apelada,
-               "sancionada"=>$sancionada]);
+               "sancionada"=>$sancionada,
+               "reincidencia"=>$reincidencia]);
 
             
         }

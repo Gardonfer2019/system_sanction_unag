@@ -75,7 +75,7 @@
 
                                                     {{-- Faltas --}}
 
-                                                    <div class="form-group">
+                                                    <div class="form-group">3.0
                                                         
                                                         <label for="InputIdFalta">Falta Cometida</label>
                                                         {{-- <input type="text" class="form-control" id="InputIdFalta"  placeholder="Falta" value=""> --}}
@@ -139,7 +139,8 @@
                                                         <input type="hidden" class="form-control" id="InputIdUsuario" name="inputUsuario" value=" {{ Auth::user()->id }}">
                                                         <input type="hidden" class="form-control" id="InputBorrado" name="inputBorrado" value="false">
                                                         <input type="hidden" class="form-control" id="InputApelada" name="inputApelada" value="false">
-                                                        <input type="hidden" class="form-control" id="InputSancionada" name="inputSancionada" value="false">  
+                                                        <input type="hidden" class="form-control" id="InputSancionada" name="inputSancionada" value="false">
+                                                        <input type="hidden" class="form-control" id="InputReincidencia" name="inputReincidencia" value="false">  
                                                     </div>
                                                    <div class="form-group text-right">
                                                         <button type="button" class="btn btn-cancelar text-light" data-dismiss="modal">Cancelar</button>
@@ -198,7 +199,7 @@
             $('#tablaFaltas').DataTable({
                 columnDefs: [ { goals: [4]  }],
                 responsive: true,
-                "paging":   true,
+                "paging":   false,
                 "info": false,
                 autoWidth:  true,
                 scrollY:     400,

@@ -9,7 +9,7 @@ class ReportesController extends Controller
 {
     protected $RPT_FICHA_DISCIPLINARIA;
 
-    protected $INPUT_RPT_PAHT;
+    protected $INPUT_RPT_PATH;
     protected $OUTPUT_RPT_PATH;
     protected $dbConnection=array();
 
@@ -17,7 +17,7 @@ class ReportesController extends Controller
     public function __construct(){
         $this->RPT_FICHA_DISCIPLINARIA='ficha_disciplinaria';
 
-        $this->INPUT_RPT_PAHT=app_path().'/Documents/Reports/';
+        $this->INPUT_RPT_PATH=app_path().'/Documents/Reports/';
         $this->OUTPUT_RPT_PATH='/documents/reports/';
 
         $this->dbConnection=[
@@ -31,8 +31,8 @@ class ReportesController extends Controller
 
     }
     public function fichaDisciplinaria(Request $request, $numero_registro_asignado){
-        $input = $this->INPUT_RPT_PAHT.$this->RPT_FICHA_DISCIPLINARIA.'.jrxml';
-        $inputCompilado = $this->INPUT_RPT_PAHT.$this->RPT_FICHA_DISCIPLINARIA.'.jasper';
+        $input = $this->INPUT_RPT_PATH.$this->RPT_FICHA_DISCIPLINARIA.'.jrxml';
+        $inputCompilado = $this->INPUT_RPT_PATH.$this->RPT_FICHA_DISCIPLINARIA.'.jasper';
 
         $outhput = $this->OUTPUT_RPT_PATH.'/'.$this->RPT_FICHA_DISCIPLINARIA;
 
@@ -61,6 +61,7 @@ class ReportesController extends Controller
                 public_path().$outhput,
                 $options
             )->execute();
+                
 
         return view('reportes.generico')->with('reportName',$outhput.'.pdf');
 

@@ -123,9 +123,11 @@
                 fecha_inicio: '{{$fechaInicio ?? ''}}',
                 fecha_final: '{{$fechaFinal ?? ''}}'
 
-            }; 
+            };
+        console.log(form_data); 
             
         $.ajax({
+            
                 url: '{{url("/estadisticas/grafico/{fecha_inicio}/{fecha_final}")}}',
                 type: 'get',
                 data: form_data,
