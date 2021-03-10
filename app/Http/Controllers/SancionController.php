@@ -279,7 +279,7 @@ class SancionController extends Controller
         $reincidencia=$request->InputReincidencia;
 
         $id_falta1=$request->inputFalta;
-        $id_falta2=$request->inputFalt2;
+        $id_falta2=$request->inputFalta2;
         $observacionR=$request->InputObservacion;
 
    
@@ -331,11 +331,11 @@ class SancionController extends Controller
                 "sancionado"=>$sancionada
                 ]);
         
-        $updateReincidencia=DB::UPDATE("UPDATE tbl_solicitud_falta_estudiante
+        $updateReincidencia=DB::UPDATE("UPDATE public.tbl_solicitud_falta_estudiante
                 SET  sancionada=true, reincidencia=true
                 WHERE id_solicitud_falta_estudiante=:id_falta",["id_falta"=>$id_falta2]);
         
-        $updateFaltaSancionada=DB::UPDATE("UPDATE tbl_solicitud_falta_estudiante
+        $updateFaltaSancionada=DB::UPDATE("UPDATE public.tbl_solicitud_falta_estudiante
                 SET  sancionada=true, reincidencia=true
                 WHERE id_solicitud_falta_estudiante=:id_falta",["id_falta"=>$id_falta1]);
         
@@ -345,6 +345,6 @@ class SancionController extends Controller
 
 
         //  return $request->all();
-       return redirect()->route('sanciones.index');
+       return redirect()->url('/sanciones');
     }
 }
