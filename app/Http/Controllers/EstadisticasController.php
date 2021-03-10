@@ -108,14 +108,17 @@ class EstadisticasController extends Controller
                     (SELECT TSF.ID_SANCION_FALTA, TF.DESCRIPCION, TTF.NOMBRE_TIPO, TS.NOMBRE_SANCION FROM TBL_SANCION_FALTA TSF
                         LEFT JOIN TBL_FALTAS TF ON TSF.ID_FALTA = TF.ID_FALTA
                         LEFT JOIN TBL_SANCIONES TS ON TSF.ID_SANCION = TS.ID_SANCION
-                        LEFT JOIN TBL_TIPO_FALTA TTF ON TF.ID_TIPO_FALTA=TTF.ID_TIPO_FALTA)
+                        LEFT JOIN TBL_TIPO_FALTA TTF ON TF.ID_TIPO_FALTA=TTF.ID_TIPO_FALTA),
                     
-            SELECT to_char( tse.fecha_sancion, 'yyyy-MM-dd') as fecha_sancion, count (tse.numero_registro_asignado) as cantidad_sanciones
+          primer_agrupamiento as (SELECT to_char( tse.fecha_sancion, 'yyyy-MM-dd') as fecha_sancion, count (tse.numero_registro_asignado) as cantidad_sanciones
                 FROM tbl_sancion_estudiante tse
                 JOIN estudiantes e ON tse.numero_registro_asignado=e.numero_registro_asignado
                 WHERE tse.sancionado=true AND tse.fecha_sancion BETWEEN :fechaInicio AND :fechaFinal
                 GROUP BY tse.fecha_sancion
-                ORDER BY tse.fecha_sancion asc", ['fechaInicio'=>$fechaInicio, 'fechaFinal'=>$fechaFinal]);
+                ORDER BY tse.fecha_sancion asc)
+                
+                SelecT fecha_sancion, count(fecha_sancion) as cantidad_sanciones from primer_agrupamiento
+				GROUP BY fecha_sancion", ['fechaInicio'=>$fechaInicio, 'fechaFinal'=>$fechaFinal]);
 
         //dd($data);
         
